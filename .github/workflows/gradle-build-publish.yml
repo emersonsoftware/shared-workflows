@@ -24,6 +24,10 @@ jobs:
     - name: Build with Gradle
       uses: emersonsoftware/gradle-build-action@v2.1.3
       env: 
-        SONAR_TOKEN: ${{secret.SONAR_TOKEN}}
+        SONAR_TOKEN: ${{ secret.SONAR_TOKEN }}
       with:
-        arguments: build sonarqube publish
+        arguments: |
+          build 
+          sonarqube 
+          publish 
+          -PexternalPassword=${{ secret.EXTERNAL_PASSWORD }}
