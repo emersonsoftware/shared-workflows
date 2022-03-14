@@ -1,0 +1,29 @@
+name: Gradle build test and sonar scan
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Gradle build, test and sonar scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: emersonsoftware/checkout@v2
+    - name: Set up JDK 17
+      uses: emersonsoftware/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        cache: 'gradle'
+    - name: Build with Gradle
+      uses: emersonsoftware/gradle-build-action@v2.1.3
+      env: 
+        SONAR_TOKEN: ${{secret.SONAR_TOKEN}}
+      with:
+        arguments: build sonarqube publish
