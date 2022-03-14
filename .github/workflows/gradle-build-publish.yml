@@ -30,4 +30,4 @@ jobs:
           build 
           sonarqube 
           publish 
-          -PexternalPassword=${{ secret.EXTERNAL_PASSWORD }}
+          -PexternalPassword=${{ secret.EXTERNAL_MAVEN_REPO_PASSWORD }}
