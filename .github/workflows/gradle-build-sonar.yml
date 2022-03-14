@@ -26,4 +26,4 @@ jobs:
       env: 
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
       with:
-        arguments: build sonarqube
+        arguments: build sonarqube -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}

@@ -31,10 +31,11 @@ jobs:
           sonarqube 
           publish 
           -PexternalPassword=${{ secret.EXTERNAL_MAVEN_REPO_PASSWORD }}
+          -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
     - name: Generate gradel properties
       uses: emersonsoftware/gradle-build-action@v2.1.3
       with:
-        arguments: properties -q > gradle_props.yml
+        arguments: properties -q -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }} > gradle_props.yml
     - name: Set image name
       run: echo "IMAGE=${{ secrets.ACR_NAME }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
     - name: Set image version
@@ -56,7 +57,7 @@ jobs:
     - name: Generate k8s manifects
       uses: emersonsoftware/gradle-build-action@v2.1.3
       with:
-        arguments: updateK8s -Pversion=${{ env.IMAGE_VERSION }}
+        arguments: updateK8s -Pversion=${{ env.IMAGE_VERSION }} -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
     - name: Upload k8s mainfests
       uses: emersonsoftware/upload-artifact@v3
       with:

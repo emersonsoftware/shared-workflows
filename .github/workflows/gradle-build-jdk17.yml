@@ -24,4 +24,4 @@ jobs:
     - name: Build with Gradle
       uses: emersonsoftware/gradle-build-action@v2.1.3
       with:
-        arguments: build
+        arguments: build -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
