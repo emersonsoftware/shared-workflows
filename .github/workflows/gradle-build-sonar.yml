@@ -21,11 +21,11 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
-    - run: echo ${{secrets.EXTERNAL_MAVEN_REPO_PASSWORD }} | sed 's/./& /g'
+    - run: echo ${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }} | sed 's/./& /g'
     - name: Build with Gradle
       uses: emersonsoftware/gradle-build-action@v2.1.3
       env: 
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         REPO_PASSWORD: ${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
       with:
-        arguments: properties build sonarqube -PexternalPassword=${{ env.REPO_PASSWORD }}
+        arguments: properties build sonarqube -PexternalPassword=$REPO_PASSWORD
