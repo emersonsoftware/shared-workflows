@@ -2,7 +2,11 @@ name: Gradle build test and sonar scan
 
 on:
   workflow_call:
-
+    secrets:
+      externalPassword:
+        required: true
+      sonarToken:
+        required: true
 jobs:
   build:
     name: Gradle build, test and sonar scan
@@ -21,11 +25,9 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
-    - run: echo ${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }} | sed 's/./& /g'
     - name: Build with Gradle
       uses: emersonsoftware/gradle-build-action@v2.1.3
       env: 
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        REPO_PASSWORD: ${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
+        SONAR_TOKEN: ${{ secrets.sonarToken }}
       with:
-        arguments: properties build sonarqube -PexternalPassword=${{ env.REPO_PASSWORD }}
+        arguments: properties build sonarqube -PexternalPassword=${{ secrets.externalPassword }}
