@@ -67,7 +67,7 @@ jobs:
       with:
         name: gradle-props
     - name: Set image name
-      run: echo "IMAGE=${{ input.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+      run: echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
     - name: Set image version
       run: echo "IMAGE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
       if: ${GITHUB_REF_TYPE} == tag
