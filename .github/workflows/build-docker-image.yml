@@ -1,0 +1,97 @@
+name: Gradle build and docker package
+
+on:
+  workflow_call:
+    inputs:
+      ACR_NAME:
+        required: true
+        type: string
+    secrets:
+      EXTERNAL_MAVEN_REPO_PASSWORD:
+        required: true
+      ACR_USERNAME:
+        required: true
+      ACR_PASSWORD:
+        required: true
+
+jobs:
+  build:
+    name: Gradle build, test and build docker image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: emersonsoftware/checkout@v2
+    - name: Set up JDK 17
+      uses: emersonsoftware/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        cache: 'gradle'
+    - name: Build with Gradle
+      uses: emersonsoftware/gradle-build-action@v2.1.3
+      with:
+        arguments: |
+          build 
+          updateK8s 
+          -DREPLICAS=1
+          -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
+    - name: Upload k8s mainfests
+      uses: emersonsoftware/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: /build/libs/*.jar
+    - name: Upload k8s mainfests
+      uses: emersonsoftware/upload-artifact@v3
+      with:
+        name: k8s-mainfests
+        path: /build/k8s.yaml
+    - name: Generate gradel properties
+      uses: emersonsoftware/gradle-build-action@v2.1.3
+      with:
+        arguments: properties -q -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }} > build/gradle_props.yml
+    - name: Upload k8s mainfests
+      uses: emersonsoftware/upload-artifact@v3
+      with:
+        name: gradle-props
+        path: /build/gradle_props.yml
+  image-build:
+    name: Build docker image and push
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dowaload build artifacts
+      uses: emersonsoftware/download-artifact@v3
+      with:
+        name: build-artifacts
+    - name: Dowaload gradle props
+      uses: emersonsoftware/download-artifact@v3
+      with:
+        name: gradle-props
+    - name: Set image name
+      run: echo "IMAGE=${{ secrets.ACR_NAME }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+    - name: Set image version
+      run: echo "IMAGE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+      if: ${GITHUB_REF_TYPE} == tag
+    - run: echo "IMAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
+      if: ${GITHUB_REF_TYPE} != tag
+    - name: Login azure container registry
+      uses: emersonsoftware/docker-login@v1
+      with:
+        login-server: ${{ env.ACR_NAME }}.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+    - name: Build and push docker images
+      run: |        
+        docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=build/libs/*.jar
+        docker push  $IMAGE:$IMAGE_VERSION
+        docker push  $IMAGE:latest
+
+
+    
+    
+    

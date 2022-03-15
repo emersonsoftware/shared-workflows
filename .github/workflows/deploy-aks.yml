@@ -1,0 +1,42 @@
+name: Deploy to aks
+
+on:
+  workflow_call:
+    env:
+      DEPLOY_TO:
+        requried: true
+      CLUSTER_NAME:
+        requried: true
+      CLUSTER_RESOURCE_GROUP:
+        required: true
+      REPLICAS:
+        reuried: false
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+jobs:
+  deploy:
+    name: Deploy to ${{ env.DEPLOY_TO }}
+    environment: ${{ env.DEPLOY_TO }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: emersonsoftware/download-artifact@v3
+        with:
+          name: k8s-mainfests
+      - name: update replicas
+        run: |
+          if [[$REPLICAS!=""]]
+            sed -i 's/replicas: 1/replicas: $REPLICAS/g' build/k8s.yml
+          fi
+
+      # Set the target Azure Kubernetes Service (AKS) cluster.
+      - uses: emersonsoftware/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+      # Deploy app to AKS
+      - uses: emersonsoftware/k8s-deploy@v1
+        with:
+          manifests: |
+            build/k8s.yaml
