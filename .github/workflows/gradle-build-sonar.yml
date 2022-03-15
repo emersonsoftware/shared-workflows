@@ -3,9 +3,9 @@ name: Gradle build test and sonar scan
 on:
   workflow_call:
     secrets:
-      externalPassword:
+      external-password:
         required: true
-      sonarToken:
+      sonar-token:
         required: true
 jobs:
   build:
@@ -29,5 +29,6 @@ jobs:
       uses: emersonsoftware/gradle-build-action@v2.1.3
       env: 
         SONAR_TOKEN: ${{ secrets.sonarToken }}
+        SONAR_HOST_URL: https://sonarcloud.io
       with:
         arguments: properties build sonarqube -PexternalPassword=${{ secrets.externalPassword }}
