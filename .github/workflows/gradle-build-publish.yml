@@ -3,7 +3,7 @@ name: Gradle build test and sonar scan
 on:
   workflow_call:
     secrets:
-      EXTERNAL_PASSWORD:
+      external-maven-repo-password:
         required: true
 jobs:
   build:
@@ -29,4 +29,4 @@ jobs:
         arguments: |
           build  
           publish 
-          -PexternalPassword=${{ secrets.EXTERNAL_PASSWORD }}
+          -PexternalPassword=${{ secrets.external-maven-repo-password }}
