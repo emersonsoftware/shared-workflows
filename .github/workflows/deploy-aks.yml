@@ -34,7 +34,7 @@ jobs:
     - name: update replicas
       run: |
         sed -i 's/@replicas@/${{ inputs.replicas }}/g' k8s.yaml
-        sed -i 's/@version@/replicas: $IMAGE_VERSION/g' k8s.yaml
+        sed -i 's/@version@/$IMAGE_VERSION/g' k8s.yaml
 
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - uses: azure/aks-set-context@v2.0
