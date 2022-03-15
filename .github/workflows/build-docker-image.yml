@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    name: Gradle build, test and build docker image
+    name: Gradle build and test.
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -66,13 +66,14 @@ jobs:
         name: gradle-props
     - name: Set image name
       run: echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
-    - name: Set image version
+    - name: Set image version by tag
       run: echo "IMAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
-      if: ${{ github.ref.type }} == tag
-    - run: echo "IMAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
-      if: ${{ github.ref.type }} != tag
+      if: ${{ github.ref.type == tag }}
+    - name: Set image version by property
+      run: echo "IMAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
+      if: ${{ github.ref.type != tag }}
     - name: Login azure container registry
-      uses: docker/login-action@v1
+      uses: azure/docker-login@v1
       with:
         login-server: ${{ inputs.acr-name }}.azurecr.io
         username: ${{ secrets.acr-username }}
