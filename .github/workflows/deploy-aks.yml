@@ -35,11 +35,12 @@ jobs:
       run: |
         sed -i 's/@replicas@/${{ inputs.replicas }}/g' k8s.yaml
         sed -i 's/@version@/$IMAGE_VERSION/g' k8s.yaml
-
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.azure-credentials }}
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - uses: azure/aks-set-context@v2.0
       with:
-        creds: '${{ secrets.azure-credentials }}'
         cluster-name: ${{ inputs.cluster-name }}
         resource-group: ${{ inputs.resource-group }}
       # Deploy app to AKS
