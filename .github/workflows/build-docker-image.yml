@@ -64,6 +64,8 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: gradle-props
+    - name: Display structure of downloaded files
+      run: ls -R
     - name: Set image name
       run: echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
     - name: Set image version by tag
