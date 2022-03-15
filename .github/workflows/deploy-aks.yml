@@ -33,8 +33,8 @@ jobs:
       if: github.ref.type != 'tag'
     - name: update replicas
       run: |
-        sed -i 's/@replicas@/${{ inputs.replicas }}/g' k8s.yaml
-        sed -i 's/@version@/$IMAGE_VERSION/g' k8s.yaml
+        sed -i "s/@replicas@/${{ inputs.replicas }}/g" k8s.yaml
+        sed -i "s/@version@/$IMAGE_VERSION/g" k8s.yaml
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.azure-credentials }}
