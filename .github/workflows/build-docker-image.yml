@@ -65,7 +65,7 @@ jobs:
       with:
         name: gradle-props
     - name: Display structure of downloaded files
-      run: ls -R
+      run: ls
     - name: Set image name
       run: echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
     - name: Set image version by tag
@@ -82,7 +82,7 @@ jobs:
         password: ${{ secrets.acr-password }}
     - name: Build and push docker images
       run: |        
-        docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=build/libs/*.jar
+        docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=*.jar
         docker push  $IMAGE:$IMAGE_VERSION
         docker push  $IMAGE:latest
 
