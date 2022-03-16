@@ -23,10 +23,16 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
+    - name: Set package version by tag
+      run: echo "PACKAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
+      if: github.ref.type == 'tag'
+    - name: Set package version by property
+      run: echo "PACKAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
+      if: github.ref.type != 'tag'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
         arguments: |
           build  
-          publish 
+          publish -Pversion=$PACKAGE_VERSION
           -PexternalPassword=${{ secrets.external-maven-repo-password }}
