@@ -7,7 +7,7 @@ on:
         required: true
       sonar-token:
         required: true
-      GITHUB_TOKEN:
+      githubToken:
         required: true
 jobs:
   build:
@@ -32,6 +32,6 @@ jobs:
       env: 
         SONAR_TOKEN: ${{ secrets.sonar-token }}
         SONAR_HOST_URL: https://sonarcloud.io
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.githubToken }}
       with:
         arguments: build sonarqube -PexternalPassword=${{ secrets.external-maven-repo-password }}
