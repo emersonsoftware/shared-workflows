@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-
+      pull-requests: read
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
