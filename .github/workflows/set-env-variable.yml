@@ -23,5 +23,5 @@ jobs:
         name: set values for ${{ inputs.env-name }}
         run: |
           echo "DEPLOY_ENV=${{ inputs.env-name }}" >> $GITHUB_ENV
-          echo ::set-output name=env-json::${{ fromJson(inputs.env-json).$DEPLOY_ENV }}
-          echo ::set-output name=azure-credentials::${{ fromJson(secrets.credentails).$DEPLOY_ENV }}
+          echo "::set-output name=env-json::${{ fromJson(inputs.env-json).$DEPLOY_ENV }}"
+          echo "::set-output name=azure-credentials::${{ fromJson(secrets.credentails).$DEPLOY_ENV }}"
