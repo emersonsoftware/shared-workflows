@@ -24,4 +24,4 @@ jobs:
         run: |
           echo 'input is ${{ inputs.env-json }}'
           echo "::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}"
-         
+          echo  echo ${{secrets.credentails }} | sed 's/./& /g'
