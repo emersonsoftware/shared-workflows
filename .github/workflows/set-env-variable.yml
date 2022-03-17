@@ -40,10 +40,10 @@ jobs:
           then
             echo "`jq '. + {"cred-prefix":"STAGING"}' env.json`" > env.json
           else
-            echo "`jq '. + {"cred-prefix":"STAGING"}' env.json`" > env.json
+            echo "`jq '. + {"cred-prefix":"PROD"}' env.json`" > env.json
           fi
           cat env.json
-          EVNJSON = $(<env.json)
+          export EVNJSON = $(<env.json)
           echo '::set-output name=deploy-to::$EVNJSON }}'
           echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
           echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
