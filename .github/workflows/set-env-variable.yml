@@ -41,7 +41,7 @@ jobs:
           else
             ENVJSON.cred-prefix="PROD"
           fi
-          echo '::set-output name=deploy-to::${{ toJson("$EVNJSON") }}'
+          echo '::set-output name=deploy-to::$EVNJSON }}'
           echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
           echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
 
