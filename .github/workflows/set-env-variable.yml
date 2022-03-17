@@ -22,8 +22,8 @@ jobs:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
-          echo 'input is ${{ fromJson(inputs.env-json) }}'
-          echo '::set-output name=env-json::${{ fromJson(inputs.env-json)[inputs.env-name] }}'
+          echo 'input is ${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
+          echo '::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
       - id: setCredentials
         name: set credentials for ${{ inputs.env-name }}
         run: |
