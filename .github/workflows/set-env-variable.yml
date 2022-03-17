@@ -37,10 +37,12 @@ jobs:
           echo '${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}' > env.json
           cat env.json
           if ${{ inputs.env-name =='staging'}}
+          then
             echo "`jq '.cred-prefix="STAGING"' env.json`" > env.json
           else
             echo "`jq '.cred-prefix="STAGING"' env.json`" > env.json
           fi
+          cat env.json
           export EVNJSON = "`cat env.json`"
           echo '::set-output name=deploy-to::$EVNJSON }}'
           echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
