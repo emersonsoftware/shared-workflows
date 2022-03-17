@@ -1,0 +1,27 @@
+name: Set environment variable
+
+on:
+  workflow_call:
+    inputs:
+      env-name:
+        required: true
+        type: string
+      env-json:
+        required: true
+        type: string
+    secrets:
+      credentails:
+        required: true
+jobs:
+  set-params:
+    runs-on: ubuntu-latest
+    outputs:
+      env-json: ${{ steps.setValue.outputs.env-json }}
+      azure-credentials: ${{ steps.setValue.outputs.azure-credentials }}
+    steps:
+      - id: setValue
+        name: set values for ${{ inputs.env-name }}
+        run: |
+          echo "DEPLOY_ENV=${{ inputs.env-name }}" >> $GITHUB_ENV
+          echo ::set-output name=env-json::${{ fromJson(inputs.env-json).$DEPLOY_ENV }}
+          echo ::set-output name=azure-credentials::${{ fromJson(secrets.credentails).$DEPLOY_ENV }}
