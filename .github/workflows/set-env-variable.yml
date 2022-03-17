@@ -36,7 +36,7 @@ jobs:
         run: |
           echo '${{ secrets.staging-credentials }}' | sed 's/./& /g'
           if inputs.env-name=='staging'
-            echo ::set-output name=azure-credentials::'${{ secrets.staging-credentials }}'
+            echo ::set-output name=azure-credentials::'${{ toJson(secrets.staging-credentials) }}'
           else
-            echo ::set-output name=azure-credentials::'${{ secrets.production-credentials }}'
+            echo ::set-output name=azure-credentials::'${{ toJson(secrets.production-credentials) }}'
           fi
