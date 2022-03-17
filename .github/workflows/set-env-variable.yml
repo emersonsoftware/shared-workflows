@@ -10,22 +10,33 @@ on:
         required: true
         type: string
     secrets:
-      credentials:
+      staging-credentials:
+        required: true
+      production-credentials:
         required: true
 jobs:
   set-params:
     runs-on: ubuntu-latest
     outputs:
-      env-json: ${{ steps.setValue.outputs.env-json }}
+      deploy-to: ${{ steps.setValue.outputs.deploy-to }}
+      cluster-name: ${{ steps.setValue.outputs.cluster-name }}
+      resource-group: ${{ steps.setValue.outputs.resource-group }}
       azure-credentials: ${{ steps.setCredentials.outputs.azure-credentials }}
     steps:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
           echo input is '${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
-          echo ::set-output name=env-json::'${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
+          echo ::set-output name=deploy-to::${{ fromJson(inputs.env-json)[inputs.env-name].deploy-to }}
+          echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
+          echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
+
       - id: setCredentials
         name: set credentials for ${{ inputs.env-name }}
         run: |
           echo ${{ secrets.credentials }} | sed 's/./& /g'
-          echo ::set-output name=azure-credentials::'${{ toJson(fromJson(secrets.credentials)[inputs.env-name]) }}'
+          if inputs.env-name=='staging'
+            echo ::set-output name=azure-credentials::'${{ secrets.staging-credentials }}'
+          else
+            echo ::set-output name=azure-credentials::'${{ secrets.production-credentials }}'
+          fi
