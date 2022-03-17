@@ -19,8 +19,8 @@ on:
       resource-group:
         description: "Resource group"
         value: ${{ jobs.set-params.outputs.resource-group }}
-      azure-credentials:
-        description: "azure credential"
+      cred-prefix:
+        description: "azure credential prefix"
         value: ${{ jobs.set-params.outputs.azure-credentials }}
 jobs:
   set-params:
