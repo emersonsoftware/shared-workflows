@@ -40,9 +40,9 @@ jobs:
         name: set values for ${{ inputs.env-name }}
         run: |
           echo input is '${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
-          echo '::set-output name=deploy-to::"${{ fromJson(inputs.env-json)[inputs.env-name].deploy-to }}"'
-          echo ::set-output name=cluster-name::"${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}"
-          echo ::set-output name=resource-group::"${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}"
+          echo '::set-output name=deploy-to::${{ fromJson(inputs.env-json)[inputs.env-name].deploy-to }}'
+          echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
+          echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
 
       - id: setCredentials
         name: set credentials for ${{ inputs.env-name }}
@@ -51,8 +51,8 @@ jobs:
           if ${{ inputs.env-name =='staging'}}
           then
             echo 'setting staging'
-            echo '::set-output name=azure-credentials::fakecrendential'
+            echo '::set-output name=azure-credentials::${{ toJson(secrets.staging-credentials) }}'
           else
             echo 'setting staging'
-            echo '::set-output name=azure-credentials::fakecrendential'
+            echo '::set-output name=azure-credentials::${{ toJson(secrets.production-credentials) }}'
           fi
