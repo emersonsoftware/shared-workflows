@@ -22,7 +22,7 @@ jobs:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
-          envjson = ${{ inputs.env-json }}
+          export envjson = "${{ inputs.env-json }}"
           envjson="${envjson//'%'/'%25'}"
           envjson="${envjson//$'\n'/'%0A'}"
           envjson="${envjson//$'\r'/'%0D'}"
