@@ -35,7 +35,7 @@ jobs:
         name: set credentials for ${{ inputs.env-name }}
         run: |
           echo '${{ secrets.staging-credentials }}' | sed 's/\n/& /g'
-          if '${{ inputs.env-name }}'=='staging'
+          if ['${{ inputs.env-name }}'=='staging']
           then
             echo 'setting staging'
             echo '::set-output name=azure-credentials::fakecrendential'
