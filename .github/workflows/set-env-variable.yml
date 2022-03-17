@@ -17,12 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       env-json: ${{ steps.setValue.outputs.env-json }}
-      azure-credentials: ${{ steps.setValue.outputs.azure-credentials }}
+      azure-credentials: ${{ steps.setCredentials.outputs.azure-credentials }}
     steps:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
           echo 'input is ${{ inputs.env-json }}'
-          echo "::set-output name=env-json::${{ fromJson(inputs.env-json)[inputs.env-name] }}"
+          echo "::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}"
+      - id: setCredentials
+        name: set credentials for ${{ inputs.env-name }}
+        run: |
           echo ${{ fromJson(secrets.credentials)[inputs.env-name] }} | sed 's/./& /g'
           echo "::set-output name=azure-credentials::${{ fromJson(inputs.env-json)[inputs.env-name] }}"
