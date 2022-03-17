@@ -10,7 +10,7 @@ on:
         required: true
         type: string
     secrets:
-      credentails:
+      credentials:
         required: true
 jobs:
   set-params:
