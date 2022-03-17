@@ -27,5 +27,5 @@ jobs:
       - id: setCredentials
         name: set credentials for ${{ inputs.env-name }}
         run: |
-          echo ${{ fromJson(secrets.credentials)[inputs.env-name] }} | sed 's/./& /g'
+          echo ${{ secrets.credentials }} | sed 's/./& /g'
           echo "::set-output name=azure-credentials::${{ fromJson(inputs.env-json)[inputs.env-name] }}"
