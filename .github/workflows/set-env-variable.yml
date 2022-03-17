@@ -22,10 +22,10 @@ jobs:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
-          echo 'input is ${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
-          echo '::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
+          echo input is '${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
+          echo ::set-output name=env-json::'${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
       - id: setCredentials
         name: set credentials for ${{ inputs.env-name }}
         run: |
           echo ${{ secrets.credentials }} | sed 's/./& /g'
-          echo "::set-output name=azure-credentials::${{ toJson(fromJson(secrets.credentials)[inputs.env-name]) }}"
+          echo ::set-output name=azure-credentials::'${{ toJson(fromJson(secrets.credentials)[inputs.env-name])) }}'
