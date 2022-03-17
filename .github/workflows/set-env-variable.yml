@@ -22,9 +22,6 @@ jobs:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
-          envjson = "${{ inputs.env-json }}"
-          envjson="${envjson//'%'/'%25'}"
-          envjson="${envjson//$'\n'/'%0A'}"
-          envjson="${envjson//$'\r'/'%0D'}"
           echo 'input is ${{ inputs.env-json }}, credential is ${{ secrets.credentails }}'
+          echo ${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}
          
