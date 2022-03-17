@@ -51,8 +51,8 @@ jobs:
           if ${{ inputs.env-name =='staging'}}
           then
             echo 'setting staging'
-            echo '::set-output name=azure-credentials::${{ toJson(secrets.staging-credentials) }}'
+            echo '::set-output name=azure-credentials::STAGING'
           else
             echo 'setting staging'
-            echo '::set-output name=azure-credentials::${{ toJson(secrets.production-credentials) }}'
+            echo '::set-output name=azure-credentials::PROD'
           fi
