@@ -22,7 +22,8 @@ jobs:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
-          echo ${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
+          echo 'input is ${{ inputs.env-json }}, credential is ${{ secrets.credentails }}'
+          echo ${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}
           echo '::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}'
           echo ${{ fromJson(secrets.credentails)[inputs.env-name] }}
           echo '::set-output name=azure-credentials::${{ fromJson(secrets.credentails)[inputs.env-name] }}'
