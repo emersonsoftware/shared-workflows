@@ -15,10 +15,18 @@ on:
       production-credentials:
         required: true
     outputs:
-      deploy-to: ${{ jobs.set-params.outputs.deploy-to }}
-      cluster-name: ${{ jobs.set-params.outputs.cluster-name }}
-      resource-group: ${{ jobs.set-params.outputs.resource-group }}
-      azure-credentials: ${{ jobs.set-params.outputs.azure-credentials }}
+      deploy-to:
+        description: "Target environment to deploy"
+        value: ${{ jobs.set-params.outputs.deploy-to }}
+      cluster-name:
+        description: "Cluster name"
+        value: ${{ jobs.set-params.outputs.cluster-name }}
+      resource-group:
+        description: "Resource group"
+        value: ${{ jobs.set-params.outputs.resource-group }}
+      azure-credentials:
+        description: "azure credential"
+        value: ${{ jobs.set-params.outputs.azure-credentials }}
 jobs:
   set-params:
     runs-on: ubuntu-latest
