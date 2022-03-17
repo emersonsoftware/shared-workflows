@@ -23,5 +23,6 @@ jobs:
         name: set values for ${{ inputs.env-name }}
         run: |
           echo 'input is ${{ inputs.env-json }}'
-          echo "::set-output name=env-json::${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}"
-          echo ${{secrets.credentials }} | sed 's/./& /g'
+          echo "::set-output name=env-json::${{ fromJson(inputs.env-json)[inputs.env-name] }}"
+          echo ${{ fromJson(secrets.credentials)[inputs.env-name] }} | sed 's/./& /g'
+          echo "::set-output name=azure-credentials::${{ fromJson(inputs.env-json)[inputs.env-name] }}"
