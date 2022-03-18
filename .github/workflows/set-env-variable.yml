@@ -42,8 +42,9 @@ jobs:
           else
             echo "`jq '. + {"cred-prefix":"PROD"}' env.json`" > env.json
           fi
-          echo json="`cat env.json`" >> $GITHUB_ENV
-          echo ::set-output name=deploy-to::"$(<env.json)" }}
+          echo envjson="`cat env.json`" >> $GITHUB_ENV
+          echo "$envjson"
+          echo ::set-output name=deploy-to::"$envjson" }}
           echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
           echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
 
