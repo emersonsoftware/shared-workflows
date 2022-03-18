@@ -10,32 +10,19 @@ on:
         required: true
         type: string
     outputs:
-      deploy-to:
+      env-json:
         description: "Target environment to deploy"
-        value: ${{ jobs.set-params.outputs.deploy-to }}
-      cluster-name:
-        description: "Cluster name"
-        value: ${{ jobs.set-params.outputs.cluster-name }}
-      resource-group:
-        description: "Resource group"
-        value: ${{ jobs.set-params.outputs.resource-group }}
-      cred-prefix:
-        description: "azure credential prefix"
-        value: ${{ jobs.set-params.outputs.azure-credentials }}
+        value: ${{ jobs.set-params.outputs.env-json }}
 jobs:
   set-params:
     runs-on: ubuntu-latest
     outputs:
-      deploy-to: ${{ steps.setValue.outputs.deploy-to }}
-      cluster-name: ${{ steps.setValue.outputs.cluster-name }}
-      resource-group: ${{ steps.setValue.outputs.resource-group }}
-      azure-credentials: ${{ steps.setCredentials.outputs.azure-credentials }}
+      env-json: ${{ steps.setValue.outputs.env-json }}
     steps:
       - id: setValue
         name: set values for ${{ inputs.env-name }}
         run: |
           echo '${{ toJson(fromJson(inputs.env-json)[inputs.env-name]) }}' > env.json
-          cat env.json
           if ${{ inputs.env-name =='staging'}}
           then
             echo "`jq '. + {"cred-prefix":"STAGING"}' env.json`" > env.json
@@ -46,21 +33,4 @@ jobs:
           envjson="${envjson//'%'/'%25'}"
           envjson="${envjson//$'\n'/'%0A'}"
           envjson="${envjson//$'\r'/'%0D'}"
-          echo "---start----"
-          echo "$envjson"
-          echo "---end----"
-          echo ::set-output name=deploy-to::"$envjson"
-          echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
-          echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
-
-      - id: setCredentials
-        name: set credentials for ${{ inputs.env-name }}
-        run: |
-          if ${{ inputs.env-name =='staging'}}
-          then
-            echo 'setting staging'
-            echo '::set-output name=azure-credentials::STAGING'
-          else
-            echo 'setting staging'
-            echo '::set-output name=azure-credentials::PROD'
-          fi
+          echo ::set-output name=env-json::"$envjson"
