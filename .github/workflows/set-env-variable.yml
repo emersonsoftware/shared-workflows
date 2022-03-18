@@ -43,7 +43,12 @@ jobs:
             echo "`jq '. + {"cred-prefix":"PROD"}' env.json`" > env.json
           fi
           envjson="`cat env.json`"
+          envjson="${envjson//'%'/'%25'}"
+          envjson="${envjson//$'\n'/'%0A'}"
+          envjson="${envjson//$'\r'/'%0D'}"
+          echo "---start----"
           echo "$envjson"
+          echo "---end----"
           echo ::set-output name=deploy-to::"$envjson"
           echo ::set-output name=cluster-name::${{ fromJson(inputs.env-json)[inputs.env-name].cluster-name }}
           echo ::set-output name=resource-group::${{ fromJson(inputs.env-json)[inputs.env-name].resource-group }}
