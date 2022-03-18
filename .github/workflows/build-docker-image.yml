@@ -43,8 +43,6 @@ jobs:
       with:
         name: build-artifacts
         path: build/libs/*.jar
-    - name: Generate gradel properties
-      run: ./gradlew properties -q > build/gradle_props.yml
   image-build:
     name: Build docker image and push
     needs: build
