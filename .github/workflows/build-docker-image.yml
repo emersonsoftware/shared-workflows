@@ -85,8 +85,8 @@ jobs:
           name: build-artifacts
       - name: Delete artifacts
         uses: emersonsoftware/delete-artifact@v1
-          with:
-            name: build-artifacts
+        with:
+          name: build-artifacts
 
 
     
