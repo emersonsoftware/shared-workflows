@@ -24,7 +24,7 @@ jobs:
       run: echo "PACKAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
       if: github.ref.type == 'tag'
     - name: Set package version by property
-      run: echo "PACKAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
+      run: echo "PACKAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
       if: github.ref.type != 'tag'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2

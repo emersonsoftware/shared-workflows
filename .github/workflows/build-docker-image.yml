@@ -45,11 +45,6 @@ jobs:
         path: build/libs/*.jar
     - name: Generate gradel properties
       run: ./gradlew properties -q > build/gradle_props.yml
-    - name: Upload gradle properties
-      uses: actions/upload-artifact@v3
-      with:
-        name: gradle-props
-        path: build/gradle_props.yml
   image-build:
     name: Build docker image and push
     needs: build
@@ -60,10 +55,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: build-artifacts
-    - name: Dowaload gradle props
-      uses: actions/download-artifact@v3
-      with:
-        name: gradle-props
     - name: Display structure of downloaded files
       run: ls
     - name: Set image name
@@ -72,7 +63,7 @@ jobs:
       run: echo "IMAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
       if: github.ref.type == 'tag'
     - name: Set image version by property
-      run: echo "IMAGE_VERSION=$(grep "^version:" gradle_props.yml | awk '{print $2}' | tr -d '[:space:]')" >> $GITHUB_ENV
+      run: echo "IMAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
       if: github.ref.type != 'tag'
     - name: Login azure container registry
       uses: azure/docker-login@v1
