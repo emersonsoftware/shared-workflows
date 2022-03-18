@@ -85,6 +85,19 @@ jobs:
         docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=*.jar
         docker push  $IMAGE:$IMAGE_VERSION
         docker push  $IMAGE:latest
+  download-artifacts:
+    runs-on: [self-hosted,gdc]
+    needs: image-build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Dowaload build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+      - name: Delete artifacts
+        uses: emersonsoftware/delete-artifact@v1
+          with:
+            name: build-artifacts
 
 
     
