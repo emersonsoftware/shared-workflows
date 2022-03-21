@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pull-requests: read
+      pull-requests: write
     steps:
     - uses: actions/checkout@v3
       with:
@@ -31,7 +31,7 @@ jobs:
         cache: 'gradle'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
-      env: 
+      env:
         SONAR_TOKEN: ${{ secrets.sonar-token }}
         SONAR_HOST_URL: https://sonarcloud.io
         GITHUB_TOKEN: ${{ secrets.githubToken }}
