@@ -32,9 +32,10 @@ jobs:
       if: github.ref_type != 'tag'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
+      env:
+        GITHUB_CI: "true"
       with:
         arguments: |
-          clean
           build  
           publish -Pversion=$PACKAGE_VERSION
           -PexternalPassword=${{ secrets.external-maven-repo-password }}
