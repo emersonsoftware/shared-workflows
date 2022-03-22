@@ -21,7 +21,9 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
     - name: Debug
-      run: echo "${{ toJson(github) }}"
+      run: |
+       echo '${{ toJson(github) }}' > githubcontext.json
+       cat githubcontext.json
     - name: Set package version by tag
       run: echo "PACKAGE_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       if: github.ref_type == 'tag'
