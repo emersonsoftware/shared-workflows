@@ -37,5 +37,5 @@ jobs:
       with:
         arguments: |
           build  
-          publish -Pversion=$PACKAGE_VERSION
+          publish -Pversion=${{ env.PACKAGE_VERSION }}
           -PexternalPassword=${{ secrets.external-maven-repo-password }}
