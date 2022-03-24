@@ -30,6 +30,8 @@ jobs:
     - name: Set package version by property
       run: echo "PACKAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
       if: github.ref_type != 'tag'
+    - name: Set gradlew executalbe
+      run: chmod +x gradlew
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       env:
