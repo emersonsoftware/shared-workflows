@@ -39,3 +39,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.githubToken }}
       with:
         arguments: build sonarqube -PexternalPassword=${{ secrets.external-maven-repo-password }}
+    - name: Upload test report if build failed
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-reports
+        path: build/reports/**/*
