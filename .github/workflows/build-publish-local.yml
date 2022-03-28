@@ -50,7 +50,7 @@ jobs:
           path: build/libs/*.jar
   download-artifacts:
     runs-on: [self-hosted,gdc]
-    needs: image-build
+    needs: build
     steps:
       - name: Dowaload build artifacts
         uses: actions/download-artifact@v3
