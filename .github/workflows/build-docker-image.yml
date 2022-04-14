@@ -32,6 +32,12 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
+    - name: Set version by tag
+      run: echo "PACKAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
+      if: github.ref_type == 'tag'
+    - name: Set image version by property
+      run: echo "PACKAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
+      if: github.ref_type != 'tag'
     - name: Set gradlew executalbe
       run: chmod +x gradlew
     - name: Build with Gradle
@@ -40,6 +46,7 @@ jobs:
         arguments: |
           build 
           -PexternalPassword=${{ secrets.external-maven-repo-password }}
+          -Pversion=${{ env.PACKAGE_VERSION }}
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
