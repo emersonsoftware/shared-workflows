@@ -45,3 +45,4 @@ jobs:
       with:
         name: build-reports
         path: build/reports/**/*
+        retention-days: 5
