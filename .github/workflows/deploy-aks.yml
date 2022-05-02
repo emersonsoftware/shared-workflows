@@ -13,11 +13,11 @@ on:
         required: true
         type: string
       replicas:
-        required: true
+        required: false
         type: string
         default: '1'
       manifest-file:
-        required: true
+        required: false
         type: string
         default: 'k8s.yaml'
     secrets:
