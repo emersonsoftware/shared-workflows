@@ -52,6 +52,13 @@ jobs:
       with:
         name: build-artifacts
         path: build/libs/*.jar
+    - name: Upload test report if build failed
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-reports
+        path: build/reports/**/*
+        retention-days: 5
   image-build:
     name: Build docker image and push
     needs: build
