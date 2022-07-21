@@ -57,7 +57,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: build-reports
-        path: build/reports/**/*
+        path: '**/build/reports/**/*'
         retention-days: 5
   image-build:
     name: Build docker image and push
