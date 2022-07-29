@@ -11,7 +11,7 @@ on:
         required: true
 jobs:
   build:
-    name: Gradle build, test and sonar scan
+    name: Gradle build, test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,7 +38,7 @@ jobs:
         SONAR_HOST_URL: https://sonarcloud.io
         GITHUB_TOKEN: ${{ secrets.githubToken }}
       with:
-        arguments: build sonarqube -PexternalPassword=${{ secrets.external-maven-repo-password }}
+        arguments: build -PexternalPassword=${{ secrets.external-maven-repo-password }}
     - name: Upload test report if build failed
       if: failure()
       uses: actions/upload-artifact@v3
