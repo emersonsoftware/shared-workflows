@@ -41,14 +41,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.githubToken }}
       with:
         arguments: build sonarqube -PexternalPassword=${{ secrets.external-maven-repo-password }}
-    - name: Run Snyk to check for vulnerabilities
-      if: "${{ env.SNYK_TOKEN != '' }}"
-      uses: snyk/actions/gradle-jdk17@master
-      env:
-        SNYK_TOKEN: ${{ secrets.snyk-token }}
-        ORG_GRADLE_PROJECT_externalPassword: ${{ secrets.external-maven-repo-password }}
-      with:
-        arguments: --all-sub-projects monitor
     - name: Upload test report if build failed
       if: failure()
       uses: actions/upload-artifact@v3
@@ -56,3 +48,15 @@ jobs:
         name: build-reports
         path: '**/build/reports/**/*'
         retention-days: 5
+  snykScan:
+    name: Snyk scan using gradle
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Snyk to check for vulnerabilities
+      if: "${{ env.SNYK_TOKEN != '' }}"
+      uses: snyk/actions/gradle-jdk17@master
+      env:
+        SNYK_TOKEN: ${{ secrets.snyk-token }}
+        ORG_GRADLE_PROJECT_externalPassword: ${{ secrets.external-maven-repo-password }}
+      with:
+        args: --all-sub-projects monitor
