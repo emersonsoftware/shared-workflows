@@ -48,8 +48,20 @@ jobs:
         name: build-reports
         path: '**/build/reports/**/*'
         retention-days: 5
+  checkSecrets:
+    runs-on: ubuntu-latest
+    outputs:
+      HAS_SNYK_TOKEN: ${{ steps.check.outputs.SNYK_TOKEN }}
+    steps:
+      - run: >
+          echo "::set-output name=SNYK_TOKEN::${{ env.SNYK_TOKEN != '' }}";
+        id: check
+        env:
+          SNYK_TOKEN: ${{ secrets.snyk-token }}
   snykScan:
     name: Snyk scan using gradle
+    if: >
+      needs.secrets.outputs.HAS_SNYK_TOKEN == 'true'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -58,7 +70,6 @@ jobs:
     - name: Set gradlew executalbe
       run: chmod +x gradlew
     - name: Run Snyk to check for vulnerabilities
-      if: "${{ env.SNYK_TOKEN != '' }}"
       uses: snyk/actions/gradle-jdk17@master
       env:
         SNYK_TOKEN: ${{ secrets.snyk-token }}
@@ -66,12 +77,3 @@ jobs:
       with:
         args: --all-sub-projects
         command: monitor
-    - name: Run Snyk to scan code
-      if: "${{ env.SNYK_TOKEN != '' }}"
-      uses: snyk/actions/gradle-jdk17@master
-      env:
-        SNYK_TOKEN: ${{ secrets.snyk-token }}
-        ORG_GRADLE_PROJECT_externalPassword: ${{ secrets.external-maven-repo-password }}
-      with:
-        args: --all-sub-projects
-        command: code test
