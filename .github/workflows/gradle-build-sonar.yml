@@ -78,5 +78,5 @@ jobs:
         SNYK_TOKEN: ${{ secrets.snyk-token }}
         ORG_GRADLE_PROJECT_externalPassword: ${{ secrets.external-maven-repo-password }}
       with:
-        args: --all-sub-projects  --project-name=${{ github.repository }}
+        args: --all-sub-projects  --remote-repo-url=${{ github.repository }}
         command: monitor
