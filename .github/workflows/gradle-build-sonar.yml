@@ -61,7 +61,7 @@ jobs:
   snykScan:
     name: Snyk scan using gradle
     if: >
-      needs.secrets.outputs.HAS_SNYK_TOKEN == 'true'
+      needs.checkSecrets.outputs.HAS_SNYK_TOKEN == 'true'
     runs-on: ubuntu-latest
     needs: checkSecrets
     steps:
