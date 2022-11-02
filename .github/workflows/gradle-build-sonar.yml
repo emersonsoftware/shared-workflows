@@ -64,8 +64,8 @@ jobs:
       needs.checkSecrets.outputs.HAS_SNYK_TOKEN == 'true'
     runs-on: ubuntu-latest
     permissions:
-      packages: write
-      pull-requests: read
+      security-events: write
+      actions: read
       contents: read
     needs: checkSecrets
     steps:
