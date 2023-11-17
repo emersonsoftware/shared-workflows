@@ -120,10 +120,10 @@ jobs:
         with:
           name: build-artifacts
           path: "\\artifacts\\${{ github.repository }}\\${{ github.ref_name }}"
-      - name: Delete artifacts
-        uses: emersonsoftware/delete-artifact@v1
-        with:
-          name: build-artifacts
+      # - name: Delete artifacts
+      #   uses: emersonsoftware/delete-artifact@v1
+      #   with:
+      #     name: build-artifacts
   cleanup-artifacts:
     runs-on: [self-hosted,gdc]
     needs: [image-build, publish-artifacts]
