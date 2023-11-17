@@ -86,27 +86,13 @@ jobs:
       run: |
         echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
         echo "IMAGE_VERSION=${{ needs.build.outputs.package-version }}" >> $GITHUB_ENV
-    # - name: Set image version by tag
-    #   run: echo "IMAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
-    #   if: github.ref_type == 'tag'
-    # - name: Set image version by property
-    #   run: echo "IMAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
-    #   if: github.ref_type != 'tag'
-    # - name: Check Image Version
-    #   id: check-image-version
-    #   run: |
-    #     if [[ ${{ env.IMAGE_VERSION }} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    #         echo "stable=true" >> $GITHUB_OUTPUT
-    #     fi
     - name: Login azure container registry
-      # if: steps.check-image-version.outputs.stable == 'true'
       uses: azure/docker-login@v1
       with:
         login-server: ${{ inputs.acr-name }}.azurecr.io
         username: ${{ secrets.acr-username }}
         password: ${{ secrets.acr-password }}
     - name: Build and push docker images
-      # if: steps.check-image-version.outputs.stable == 'true'
       run: |        
         docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=*.jar
         docker push  $IMAGE:$IMAGE_VERSION
@@ -120,10 +106,6 @@ jobs:
         with:
           name: build-artifacts
           path: "\\artifacts\\${{ github.repository }}\\${{ github.ref_name }}"
-      # - name: Delete artifacts
-      #   uses: emersonsoftware/delete-artifact@v1
-      #   with:
-      #     name: build-artifacts
   cleanup-artifacts:
     runs-on: [self-hosted,gdc]
     needs: [image-build, publish-artifacts]
