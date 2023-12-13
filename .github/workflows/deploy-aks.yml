@@ -48,6 +48,6 @@ jobs:
         cluster-name: ${{ inputs.cluster-name }}
         resource-group: ${{ inputs.resource-group }}
       # Deploy app to AKS
-    - uses: Azure/k8s-deploy@v1
+    - uses: Azure/k8s-deploy@v4
       with:
         manifests: ${{ inputs.manifest-file }}
