@@ -44,7 +44,7 @@ jobs:
             -Pversion=${{ env.PACKAGE_VERSION }}
             -PexternalPassword=${{ secrets.external-maven-repo-password }}
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: build/libs/*.jar
