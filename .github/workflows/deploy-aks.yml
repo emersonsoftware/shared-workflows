@@ -28,7 +28,7 @@ jobs:
     name: Deploy to ${{ inputs.deploy-to }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set image version by tag
       run: echo "IMAGE_VERSION=$GITHUB_REF_NAME" >> $GITHUB_ENV
       if: github.ref_type == 'tag'
