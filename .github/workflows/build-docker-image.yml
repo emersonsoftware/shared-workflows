@@ -58,13 +58,13 @@ jobs:
           -PexternalPassword=${{ secrets.external-maven-repo-password }}
           -Pversion=${{ env.PACKAGE_VERSION }}
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: build/libs/*.jar
     - name: Upload test report if build failed
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-reports
         path: '**/build/reports/**/*'

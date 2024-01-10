@@ -44,7 +44,7 @@ jobs:
         arguments: build sonar -PexternalPassword=${{ secrets.external-maven-repo-password }}
     - name: Upload test report if build failed
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-reports
         path: '**/build/reports/**/*'
