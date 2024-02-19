@@ -34,7 +34,7 @@ jobs:
     - name: Set gradlew executalbe
       run: chmod +x gradlew
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3.0.0
+      uses: gradle/gradle-build-action@v3.1.0
       env:
         GITHUB_CI: "true"
       with:
