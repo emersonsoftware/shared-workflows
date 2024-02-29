@@ -55,7 +55,7 @@ jobs:
       HAS_SNYK_TOKEN: ${{ steps.check.outputs.SNYK_TOKEN }}
     steps:
       - run: >
-          echo "::set-output name=SNYK_TOKEN::${{ env.SNYK_TOKEN != '' }}";
+          echo "SNYK_TOKEN=${{ env.SNYK_TOKEN != '' }}" >> $GITHUB_OUTPUT;
         id: check
         env:
           SNYK_TOKEN: ${{ secrets.snyk-token }}
