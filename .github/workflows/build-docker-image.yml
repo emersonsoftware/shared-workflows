@@ -81,7 +81,7 @@ jobs:
     name: Build docker image and push
     needs: build
     runs-on: ubuntu-latest
-    if: needs.build.outputs.stable-version == 'true'
+    #if: needs.build.outputs.stable-version == 'true'
     steps:
     - uses: actions/checkout@v4
     - name: Dowaload build artifacts
