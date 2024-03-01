@@ -33,4 +33,4 @@ jobs:
           envjson="${envjson//'%'/'%25'}"
           envjson="${envjson//$'\n'/'%0A'}"
           envjson="${envjson//$'\r'/'%0D'}"
-          echo "env-json=$envjson" >> $GITHUB_OUTPUT
+          echo "env-json=${{ envjson }}" >> $GITHUB_OUTPUT
