@@ -39,7 +39,7 @@ jobs:
       run: |
         sed -i "s/@replicas@/${{ inputs.replicas }}/g" ${{ inputs.manifest-file }}
         sed -i "s/@version@/$IMAGE_VERSION/g" ${{ inputs.manifest-file }}
-    - uses: azure/login@v1
+    - uses: azure/login@v2
       with:
         creds: ${{ secrets.azure-credentials }}
     # Set the target Azure Kubernetes Service (AKS) cluster.
