@@ -40,6 +40,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.sonar-token }}
         SONAR_HOST_URL: https://sonarcloud.io
         GITHUB_TOKEN: ${{ secrets.githubToken }}
+        ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
+        ORG_GRADLE_PROJECT_externalUsername: ColdChainConn
       with:
         arguments: build sonar -PexternalPassword=${{ secrets.external-maven-repo-password }}
     - name: Upload test report if build failed
@@ -77,6 +79,8 @@ jobs:
       uses: snyk/actions/gradle-jdk17@master
       env:
         SNYK_TOKEN: ${{ secrets.snyk-token }}
+        ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
+        ORG_GRADLE_PROJECT_externalUsername: ColdChainConn
         ORG_GRADLE_PROJECT_externalPassword: ${{ secrets.external-maven-repo-password }}
       with:
         args: --all-sub-projects  --remote-repo-url=${{ github.server_url }}/${{ github.repository }}

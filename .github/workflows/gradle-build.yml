@@ -23,5 +23,8 @@ jobs:
         cache: 'gradle'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v3.1.0
+      env:
+        ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
+        ORG_GRADLE_PROJECT_externalUsername: ColdChainConn
       with:
         arguments: build -PexternalPassword=${{ secrets.EXTERNAL_MAVEN_REPO_PASSWORD }}
