@@ -6,6 +6,10 @@ on:
       acr-name:
         required: true
         type: string
+      publish-jar:
+        description: 'True to publish jars'
+        required: false
+        type: boolean
     secrets:
       external-maven-repo-password:
         required: true
@@ -62,6 +66,7 @@ jobs:
           -Pversion=${{ env.PACKAGE_VERSION }}
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
+      if: ${{ inputs.publish-jar }}
       with:
         name: build-artifacts
         path: build/libs/*.jar
@@ -102,9 +107,10 @@ jobs:
         docker push  $IMAGE:latest
   publish-artifacts:
     runs-on: [self-hosted,gdc]
+    if: ${{ inputs.publish-jar }}
     needs: build
     steps:
-      - name: Dowaload build artifacts
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
