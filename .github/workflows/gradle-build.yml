@@ -22,7 +22,7 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
         cache: 'gradle'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3.2.0
+      uses: gradle/gradle-build-action@v3.3.0
       env:
         ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
         ORG_GRADLE_PROJECT_externalUsername: ColdChainConn

@@ -37,7 +37,7 @@ jobs:
         run: echo "PACKAGE_VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
         if: github.ref_type != 'tag'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3.2.0
+        uses: gradle/gradle-build-action@v3.3.0
         env:
           ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
           ORG_GRADLE_PROJECT_externalUsername: ColdChainConn
