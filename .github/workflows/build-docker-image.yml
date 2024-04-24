@@ -6,10 +6,6 @@ on:
       acr-name:
         required: true
         type: string
-      publish-jar:
-        description: 'True to publish jars'
-        required: false
-        type: boolean
     secrets:
       external-maven-repo-password:
         required: true
@@ -66,7 +62,7 @@ jobs:
           -Pversion=${{ env.PACKAGE_VERSION }}
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
-      #if: ${{ inputs.publish-jar || steps.check-package-version.outputs.stable-version == 'true' }}
+      #if: ${{ steps.check-package-version.outputs.stable-version == 'true' }}
       with:
         name: build-artifacts
         path: build/libs/*.jar
@@ -105,19 +101,9 @@ jobs:
         docker build . -t $IMAGE:$IMAGE_VERSION -t $IMAGE:latest --no-cache --build-arg JAR_FILE=*.jar
         docker push  $IMAGE:$IMAGE_VERSION
         docker push  $IMAGE:latest
-  publish-artifacts:
-    runs-on: [self-hosted,gdc]
-    if: ${{ inputs.publish-jar }}
-    needs: build
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-          path: "\\artifacts\\${{ github.repository }}\\${{ github.ref_name }}"
   cleanup-artifacts:
     runs-on: [self-hosted,gdc]
-    needs: [image-build, publish-artifacts]
+    needs: [image-build]
     steps:
       - name: Delete artifacts
         uses: emersonsoftware/delete-artifact@v1
