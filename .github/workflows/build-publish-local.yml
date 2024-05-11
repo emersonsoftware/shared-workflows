@@ -61,7 +61,7 @@ jobs:
           name: build-artifacts
           path: "\\artifacts\\${{ github.repository }}\\${{ github.ref_name }}"
       - name: Delete artifacts
-        uses: emersonsoftware/delete-artifact@v1
+        uses: copelandsoftware/delete-artifact@v1
         with:
           name: build-artifacts
 

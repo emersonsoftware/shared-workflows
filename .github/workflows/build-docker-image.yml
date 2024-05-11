@@ -106,7 +106,7 @@ jobs:
     needs: [image-build]
     steps:
       - name: Delete artifacts
-        uses: emersonsoftware/delete-artifact@v1
+        uses: copelandsoftware/delete-artifact@v1
         with:
           name: build-artifacts
 
