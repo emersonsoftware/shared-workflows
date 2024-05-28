@@ -91,7 +91,7 @@ jobs:
         echo "IMAGE=${{ inputs.acr-name }}.azurecr.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
         echo "IMAGE_VERSION=${{ needs.build.outputs.package-version }}" >> $GITHUB_ENV
     - name: Login azure container registry
-      uses: azure/docker-login@v1
+      uses: azure/docker-login@v2
       with:
         login-server: ${{ inputs.acr-name }}.azurecr.io
         username: ${{ secrets.acr-username }}
