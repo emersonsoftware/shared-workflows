@@ -1,4 +1,4 @@
-name: Gradle build and publis package to local
+name: Gradle build and publish package to local
 
 on:
   workflow_call:
@@ -51,6 +51,13 @@ jobs:
         with:
           name: build-artifacts
           path: build/libs/*.jar
+      - name: Upload test report if build failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: '**/build/reports/**/*'
+          retention-days: 5
   download-artifacts:
     runs-on: [ self-hosted,gdc ]
     needs: build
