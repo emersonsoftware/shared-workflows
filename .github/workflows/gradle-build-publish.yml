@@ -34,7 +34,7 @@ jobs:
     - name: Set gradlew executalbe
       run: chmod +x gradlew
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3.3.2
+      uses: gradle/gradle-build-action@v3.4.1
       env:
         GITHUB_CI: "true"
         ORG_GRADLE_PROJECT_externalMavenRepoUrl: https://pkgs.dev.azure.com/ColdChainConn/_packaging/conn_api/maven/v1
