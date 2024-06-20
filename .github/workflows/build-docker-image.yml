@@ -106,7 +106,7 @@ jobs:
     needs: [image-build]
     steps:
       - name: Delete artifacts
-        uses: copelandsoftware/delete-artifact-v5@v5
+        uses: copelandsoftware/delete-artifact@v5
         with:
           name: build-artifacts
 
