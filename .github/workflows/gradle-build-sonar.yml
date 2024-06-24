@@ -35,7 +35,7 @@ jobs:
     - name: Set gradlew executalbe
       run: chmod +x gradlew
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3.4.1
+      uses: gradle/gradle-build-action@v3.4.2
       env:
         SONAR_TOKEN: ${{ secrets.sonar-token }}
         SONAR_HOST_URL: https://sonarcloud.io
